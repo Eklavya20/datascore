@@ -16,7 +16,7 @@ def score(df: pd.DataFrame, target: str = None) -> "Report":
         "completeness": check_completeness(df),
         "integrity": check_integrity(df),
         "ml_readiness": check_ml_readiness(df, target) if target else {},
-        "distribution": check_distribution(df),
+        "distribution": check_distribution(df, target=target),
     }
 
     return build_report(results)

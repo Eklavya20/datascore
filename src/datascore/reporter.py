@@ -73,15 +73,15 @@ def build_report(results: dict) -> Report:
         minority = ml["class_balance_minority"]
         warnings.append(f"Class imbalance: minority class is {minority*100:.1f}% of data")
 
-    for leak in ml.get("leakage_risk_cols", []):
-        blockers.append(
-            f"Leakage risk: {leak['feature']} correlates {leak['correlation']} with target"
-        )
-
     for col, cardinality in ml.get("high_cardinality_cols", {}).items():
         warnings.append(f"High cardinality: {col} has {cardinality} unique values")
 
     # --- Distribution ---
+    for leak in d.get("leakage_risk", []):
+        blockers.append(
+            f"Leakage risk: {leak['feature']} correlates {leak['correlation']} with target"
+        )
+
     for col, skew in d["skewed_cols"].items():
         warnings.append(f"High skew in {col}: {skew}")
 

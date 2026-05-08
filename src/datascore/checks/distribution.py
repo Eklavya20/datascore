@@ -12,6 +12,8 @@ def check_distribution(df: pd.DataFrame) -> dict:
     for col in num_cols:
         series = df[col].dropna()
 
+        if series.std() == 0:  # skip constant columns
+            continue
         # Skew
         skew = float(stats.skew(series))
         if abs(skew) > 1.0:
