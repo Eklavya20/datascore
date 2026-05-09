@@ -13,3 +13,6 @@ src/datascore/checks/completeness.py
 src/datascore/checks/distribution.py
 src/datascore/checks/integrity.py
 src/datascore/checks/ml_readiness.py
+tests/test_completeness.py
+tests/test_integrity.py
+tests/test_score.py
