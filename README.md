@@ -1,3 +1,8 @@
+![CI](https://github.com/Eklavya20/datascore/actions/workflows/ci.yml/badge.svg)
+![Python](https://img.shields.io/badge/python-3.11-blue)
+![PyPI](https://img.shields.io/pypi/v/datascore)
+![License](https://img.shields.io/badge/license-MIT-green)
+
 # datascore
 
 ML readiness scoring for tabular datasets.
