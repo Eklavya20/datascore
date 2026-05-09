@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 
 
 def check_ml_readiness(df: pd.DataFrame, target: str) -> dict:
