@@ -3,7 +3,7 @@ from datascore.checks.completeness import check_completeness
 from datascore.checks.integrity import check_integrity
 from datascore.checks.ml_readiness import check_ml_readiness
 from datascore.checks.distribution import check_distribution
-from datascore.reporter import build_report
+from datascore.reporter import build_report, Report
 
 
 def score(df: pd.DataFrame, target: str = None) -> "Report":
