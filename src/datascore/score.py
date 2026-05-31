@@ -9,6 +9,9 @@ from datascore.reporter import build_report, Report
 def score(df: pd.DataFrame, target: str = None) -> "Report":
     if not isinstance(df, pd.DataFrame):
         raise TypeError("Input must be a pandas DataFrame")
+    
+    if target is None:
+        print("Warning: no target specified. ML readiness and leakage checks skipped.")
 
     results = {
         "shape": df.shape,
