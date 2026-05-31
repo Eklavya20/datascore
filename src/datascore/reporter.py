@@ -36,6 +36,36 @@ class Report:
         print()
 
 
+
+    def save(self, path: str = "datascore_report.md") -> None:
+        lines = []
+        rows, cols = self.raw["shape"]
+        target = self.raw["target"] or "not specified"
+
+        lines.append("# datascore Report")
+        lines.append(f"**Rows:** {rows} | **Features:** {cols} | **Target:** {target}")
+        lines.append(f"\n**Score: {self.score}/100 — {self.verdict}**\n")
+
+        if self.blockers:
+            lines.append("## Blockers")
+            for b in self.blockers:
+                lines.append(f"- {b}")
+
+        if self.warnings:
+            lines.append("\n## Warnings")
+            for w in self.warnings:
+                lines.append(f"- {w}")
+
+        if self.info:
+            lines.append("\n## Info")
+            for i in self.info:
+                lines.append(f"- {i}")
+
+        with open(path, "w", encoding="utf-8") as f:
+            f.write("\n".join(lines))
+
+        print(f"Report saved to {path}")
+
 def build_report(results: dict) -> Report:
     blockers = []
     warnings = []
