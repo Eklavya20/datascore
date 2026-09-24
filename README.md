@@ -26,6 +26,10 @@ report = score(df, target="survived")
 report.show()
 ```
 
+`datascore` infers classification versus regression from the target. For
+ambiguous integer targets, pass `task="classification"` or
+`task="regression"` explicitly.
+
 ## Output
 
 ```text

@@ -21,18 +21,21 @@ def check_distribution(df: pd.DataFrame, target: str | None = None) -> dict:
         if series.nunique() <= 1:
             continue
 
-        # Skew
-        skew = float(stats.skew(series, nan_policy="omit"))
-        if abs(skew) > 1.0:
-            skewed_cols[col] = round(skew, 4)
+        if col != target:
+            # Skew
+            skew = float(stats.skew(series, nan_policy="omit"))
+            if abs(skew) > 1.0:
+                skewed_cols[col] = round(skew, 4)
 
-        # Outliers via IQR
-        q1 = series.quantile(0.25)
-        q3 = series.quantile(0.75)
-        iqr = q3 - q1
-        outliers = int(((series < q1 - 1.5 * iqr) | (series > q3 + 1.5 * iqr)).sum())
-        if outliers > 0:
-            outlier_cols[col] = outliers
+            # Outliers via IQR
+            q1 = series.quantile(0.25)
+            q3 = series.quantile(0.75)
+            iqr = q3 - q1
+            outliers = int(
+                ((series < q1 - 1.5 * iqr) | (series > q3 + 1.5 * iqr)).sum()
+            )
+            if outliers > 0:
+                outlier_cols[col] = outliers
 
         # Leakage risk
         if target_series is not None and col != target:

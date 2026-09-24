@@ -2,6 +2,9 @@ import pandas as pd
 
 
 def check_completeness(df: pd.DataFrame) -> dict:
+    if df.empty:
+        raise ValueError("Input DataFrame must contain at least one row and one column")
+
     total_cells = df.shape[0] * df.shape[1]
     missing_per_col = df.isnull().sum()
     missing_rate_per_col = df.isnull().mean()

@@ -43,3 +43,58 @@ def test_type_error_on_non_dataframe():
     import pytest
     with pytest.raises(TypeError):
         score([1, 2, 3], target="a")
+
+
+def test_empty_dataframe_raises():
+    import pytest
+    with pytest.raises(ValueError, match="at least one row and one column"):
+        score(pd.DataFrame())
+
+
+def test_missing_target_raises():
+    import pytest
+    df = pd.DataFrame({"feature": [1, 2, 3]})
+    with pytest.raises(ValueError, match="Target column 'missing' not found"):
+        score(df, target="missing")
+
+
+def test_all_missing_target_raises():
+    import pytest
+    df = pd.DataFrame({"feature": [1, 2], "target": [None, None]})
+    with pytest.raises(ValueError, match="contains no non-missing values"):
+        score(df, target="target")
+
+
+def test_invalid_task_raises():
+    import pytest
+    df = pd.DataFrame({"feature": [1, 2], "target": [0, 1]})
+    with pytest.raises(ValueError, match="task must be"):
+        score(df, target="target", task="forecasting")
+
+
+def test_task_without_target_raises():
+    import pytest
+    df = pd.DataFrame({"feature": [1, 2]})
+    with pytest.raises(ValueError, match="only be specified when target is provided"):
+        score(df, task="regression")
+
+
+def test_regression_target_skips_class_balance():
+    df = pd.DataFrame({
+        "feature": range(30),
+        "target": [value / 10 for value in range(30)],
+    })
+    report = score(df, target="target")
+    readiness = report.raw["ml_readiness"]
+    assert readiness["task"] == "regression"
+    assert readiness["class_balance_minority"] is None
+    assert readiness["class_imbalanced"] is None
+
+
+def test_task_override_supports_integer_regression_target():
+    df = pd.DataFrame({
+        "feature": range(10),
+        "target": range(10),
+    })
+    report = score(df, target="target", task="regression")
+    assert report.raw["ml_readiness"]["task"] == "regression"

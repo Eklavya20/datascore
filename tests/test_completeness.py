@@ -30,3 +30,9 @@ def test_high_missing_threshold():
     result = check_completeness(df)
     assert "a" in result["high_missing_cols"]
     assert result["high_missing_cols"]["a"] == 0.9
+
+
+def test_empty_dataframe_raises():
+    import pytest
+    with pytest.raises(ValueError, match="at least one row and one column"):
+        check_completeness(pd.DataFrame())

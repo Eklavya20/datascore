@@ -6,19 +6,35 @@ from datascore.checks.distribution import check_distribution
 from datascore.reporter import build_report, Report
 
 
-def score(df: pd.DataFrame, target: str = None) -> "Report":
+def score(
+    df: pd.DataFrame,
+    target: str = None,
+    task: str = None,
+) -> "Report":
     if not isinstance(df, pd.DataFrame):
         raise TypeError("Input must be a pandas DataFrame")
-    
+
+    if df.empty:
+        raise ValueError("Input DataFrame must contain at least one row and one column")
+
+    if task not in (None, "classification", "regression"):
+        raise ValueError("task must be 'classification', 'regression', or None")
+
     if target is None:
+        if task is not None:
+            raise ValueError("task can only be specified when target is provided")
         print("Warning: no target specified. ML readiness and leakage checks skipped.")
+    elif target not in df.columns:
+        raise ValueError(f"Target column '{target}' not found in DataFrame")
+    elif df[target].dropna().empty:
+        raise ValueError(f"Target column '{target}' contains no non-missing values")
 
     results = {
         "shape": df.shape,
         "target": target,
         "completeness": check_completeness(df),
         "integrity": check_integrity(df),
-        "ml_readiness": check_ml_readiness(df, target) if target else {},
+        "ml_readiness": check_ml_readiness(df, target, task=task) if target else {},
         "distribution": check_distribution(df, target=target),
     }
 
