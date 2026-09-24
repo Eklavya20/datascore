@@ -20,7 +20,7 @@ dependencies = [
 dev = [
     "pytest>=8.0",
     "pytest-cov>=5.0",
-    "ruff>=0.4",
+    "ruff==0.15.12",
 ]
 
 [tool.setuptools.packages.find]
@@ -31,3 +31,6 @@ testpaths = ["tests"]
 
 [tool.ruff]
 line-length = 88
+
+[tool.ruff.lint]
+extend-select = ["I", "RUF", "SIM"]

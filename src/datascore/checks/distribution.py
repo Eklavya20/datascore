@@ -1,5 +1,5 @@
-import pandas as pd
 import numpy as np
+import pandas as pd
 from scipy import stats
 
 
@@ -11,9 +11,12 @@ def check_distribution(df: pd.DataFrame, target: str | None = None) -> dict:
     leakage_risk = []
 
     target_series = None
-    if target is not None and target in df.columns:
-        if pd.api.types.is_numeric_dtype(df[target]):
-            target_series = df[target]
+    if (
+        target is not None
+        and target in df.columns
+        and pd.api.types.is_numeric_dtype(df[target])
+    ):
+        target_series = df[target]
 
     for col in num_cols:
         series = df[col].dropna()

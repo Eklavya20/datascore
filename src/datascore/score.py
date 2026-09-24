@@ -1,15 +1,16 @@
 import pandas as pd
+
 from datascore.checks.completeness import check_completeness
+from datascore.checks.distribution import check_distribution
 from datascore.checks.integrity import check_integrity
 from datascore.checks.ml_readiness import check_ml_readiness
-from datascore.checks.distribution import check_distribution
-from datascore.reporter import build_report, Report
+from datascore.reporter import Report, build_report
 
 
 def score(
     df: pd.DataFrame,
-    target: str = None,
-    task: str = None,
+    target: str | None = None,
+    task: str | None = None,
 ) -> "Report":
     if not isinstance(df, pd.DataFrame):
         raise TypeError("Input must be a pandas DataFrame")

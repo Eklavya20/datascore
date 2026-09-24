@@ -1,6 +1,5 @@
 import pandas as pd
 
-
 VALID_TASKS = {"classification", "regression"}
 
 
